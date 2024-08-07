@@ -114,7 +114,9 @@ function Calculator() {
         </div>
 
         <div className="text-white pt-32 pb-11 flex flex-col items-end pr-6 gap-6">
-          <div className=" overflow-hidden text-2xl">{input}</div>
+          <div className="overflow-hidden max-w-full text-2xl whitespace-nowrap truncate">
+            {input}
+          </div>
         </div>
       </div>
 
