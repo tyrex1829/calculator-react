@@ -37,7 +37,57 @@ function Calculator() {
     return () => clearInterval(interval);
   }, []);
 
-  let evalEqual = "";
+  const calculateResult = (input) => {
+    let result;
+
+    try {
+      const operators = ["+", "-", "*", "/", "%"];
+      let operator = null;
+
+      for (let i = 0; i < input.length; i++) {
+        if (operators.includes(input[i])) {
+          operator = input[i];
+          break;
+        }
+      }
+
+      if (!operator) {
+        setInput(parseFloat(input).toString());
+        return;
+      }
+
+      const [operand1, operand2] = input.split(operator).map(parseFloat);
+      let result;
+
+      switch (operator) {
+        case "+":
+          result = operand1 + operand2;
+          break;
+
+        case "-":
+          result = operand1 - operand2;
+          break;
+
+        case "*":
+          result = operand1 * operand2;
+          break;
+
+        case "/":
+          result = operand1 / operand2;
+          break;
+
+        case "%":
+          result = operand1 % operand2;
+          break;
+
+        default:
+          throw new Error("Invalid operator");
+      }
+      setInput(result.toString());
+    } catch (error) {
+      setInput("Error");
+    }
+  };
 
   const handleButtonClick = (value) => {
     if (value === "AC") {
@@ -45,11 +95,7 @@ function Calculator() {
     } else if (value === "x") {
       setInput(input.slice(0, -1));
     } else if (value === "=") {
-      try {
-        setInput(eval(input).toString());
-      } catch (error) {
-        setInput("Error");
-      }
+      calculateResult(input);
     } else {
       setInput((preValue) => preValue + value);
     }
@@ -68,7 +114,7 @@ function Calculator() {
         </div>
 
         <div className="text-white pt-32 pb-11 flex flex-col items-end pr-6 gap-6">
-          <div className="text-2xl">{input}</div>
+          <div className=" overflow-hidden text-2xl">{input}</div>
         </div>
       </div>
 
